@@ -1,18 +1,33 @@
 
+class Product {
+    title = 'DEFAULT';
+    imageUrl;
+    description;
+    price;
+
+    constructor(title, imageUrl, description, price){
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.price = price;
+    }
+}
+
+
 const productList = {
     products: [
-        {
-            title: "A Pillow",
-            imageUrl: 'https://rnb.scene7.com/is/image/roomandboard/452325?scl=1',
-            price: 19.99,
-            description: "A Soft Pillow"
-        },
-        {
-            title: "A Carpet",
-            imageUrl: 'https://www.tapi.co.uk/oimgnn/images_products/L_1622_49355b0ed02f3c9ade7f27b8fdd0d0eb-Houston-1622-pdp-large-635.jpg',
-            price: 89.99,
-            description: "A carpet which you might like  - or not"
-        }
+        new Product(
+            "A Pillow",
+            "https://rnb.scene7.com/is/image/roomandboard/452325?scl=1",
+            19.99,
+            "A Soft Pillow"
+        ),
+        new Product(
+            "A Carpet",
+            'https://www.tapi.co.uk/oimgnn/images_products/L_1622_49355b0ed02f3c9ade7f27b8fdd0d0eb-Houston-1622-pdp-large-635.jpg',
+            89.99,
+            "A carpet which you might like  - or not"
+        ),
     ],
     render(){
         const renderHook = document.getElementById('app');
