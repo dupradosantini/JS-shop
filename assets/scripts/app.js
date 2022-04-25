@@ -15,9 +15,21 @@ class Product {
 
 class ShoppingCart {
     items = [];
+
+    set cartItems(value){
+        this.items = value;
+        this.totalOutput.innerHTML = `<h2>Total: \$${this.totalAmount.toFixed(2)}</h2>`;
+    }
+
+    get totalAmount(){
+        const sum = this.items.reduce( (prevValue, curItem) => { return prevValue + curItem.price }, 0);
+        return sum;
+    }
+
     addProduct(product){
-        this.items.push(product);
-        this.totalOutput.innerHTML = `<h2>Total: \$${1}</h2>`;
+        const updatedItems = [...this.items];
+        updatedItems.push(product);
+        this.cartItems = updatedItems;
     }
     render(){
         const cartEl = document.createElement('section');
@@ -32,7 +44,6 @@ class ShoppingCart {
 }
 
 class ProductItem {
-    product;
     constructor(product){
         this.product = product;
     }
@@ -66,14 +77,14 @@ class ProductList {
         new Product(
             "A Pillow",
             "https://rnb.scene7.com/is/image/roomandboard/452325?scl=1",
-            19.99,
-            "A Soft Pillow"
+            "A Soft Pillow",
+            19.99
         ),
         new Product(
             "A Carpet",
             'https://www.tapi.co.uk/oimgnn/images_products/L_1622_49355b0ed02f3c9ade7f27b8fdd0d0eb-Houston-1622-pdp-large-635.jpg',
-            89.99,
-            "A carpet which you might like  - or not"
+            "A carpet which you might like  - or not",
+            89.99
         ),
     ];
 
@@ -105,7 +116,7 @@ class Shop {
 
 class App{
     static cart;
-    
+
     static init(){
         const shop = new Shop();
         shop.render();
