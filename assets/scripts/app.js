@@ -113,10 +113,11 @@ class ProductItem extends Component{
 }
 
 class ProductList extends Component{
-    products = [];
+    #products = []; //adding # before variable name makes it private
 
     constructor(renderHookId){
         super(renderHookId);
+        this.render();
         this.fetchProducts();
     }
 
