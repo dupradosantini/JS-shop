@@ -21,9 +21,14 @@ class ElementAttribute {
 }
 
 class Component {
-    constructor(renderHookId){
+    constructor(renderHookId, shouldRender = true){
         this.hookId = renderHookId;
+        if(shouldRender){
+            this.render();
+        }
     }
+
+    render() {}
 
     createRootElement(tag, cssClasses, attributes){
         const rootElement = document.createElement(tag);
@@ -73,8 +78,9 @@ class ShoppingCart extends Component {
 
 class ProductItem extends Component{
     constructor(product, renderHookId){
-        super(renderHookId);
+        super(renderHookId,false);
         this.product = product;
+        this.render();
     }
 
     addToCart(){
@@ -100,39 +106,52 @@ class ProductItem extends Component{
 }
 
 class ProductList extends Component{
-    products = [
-        new Product(
-            "A Pillow",
-            "https://rnb.scene7.com/is/image/roomandboard/452325?scl=1",
-            "A Soft Pillow",
-            19.99
-        ),
-        new Product(
-            "A Carpet",
-            'https://www.tapi.co.uk/oimgnn/images_products/L_1622_49355b0ed02f3c9ade7f27b8fdd0d0eb-Houston-1622-pdp-large-635.jpg',
-            "A carpet which you might like  - or not",
-            89.99
-        ),
-    ];
+    products = [];
 
     constructor(renderHookId){
         super(renderHookId);
+        this.fetchProducts();
     }
+
+    fetchProducts(){
+        this.products = [
+            new Product(
+                "A Pillow",
+                "https://rnb.scene7.com/is/image/roomandboard/452325?scl=1",
+                "A Soft Pillow",
+                19.99
+            ),
+            new Product(
+                "A Carpet",
+                'https://www.tapi.co.uk/oimgnn/images_products/L_1622_49355b0ed02f3c9ade7f27b8fdd0d0eb-Houston-1622-pdp-large-635.jpg',
+                "A carpet which you might like  - or not",
+                89.99
+            ),
+        ];
+        this.renderProducts();
+    }
+
+    renderProducts(){
+        for( const prod of this.products){
+            new ProductItem(prod,'prod-list');
+        }
+    }
+
     render(){
         this.createRootElement('ul', 'product-list', [new ElementAttribute('id', 'prod-list')]);
-        for( const prod of this.products){
-            const productItem = new ProductItem(prod,'prod-list');
-            productItem.render();
+        if(this.products && this.products.length > 0){
+            this.renderProducts();
         }
     }
 }
 
-class Shop {
+class Shop{
+ constructor(){
+     this.render();
+ }
  render(){
     this.cart = new ShoppingCart('app');
-    this.cart.render();
-    const productList = new ProductList('app');
-    productList.render();
+    new ProductList('app');
  }
 }
 
@@ -141,7 +160,6 @@ class App{
 
     static init(){
         const shop = new Shop();
-        shop.render();
         this.cart = shop.cart;
     }
     
